@@ -220,3 +220,5 @@ expense-tracker
 - Component reuse in React
 - Efficient MongoDB queries
 - Lazy loading ready structure
+
+![system architecture](image.png)
