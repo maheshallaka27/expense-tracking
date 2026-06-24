@@ -7,9 +7,14 @@ import toast from "react-hot-toast";
 import Loader from "../components/Loader.jsx";
 import { motion } from "framer-motion";
 import Budget from "../components/Budget.jsx";
+import AIChat from "../components/AIChat.jsx";
 import BudgetHistory from "../components/BudgetHistory.jsx";
+import FinancialScore from "../components/FinancialScore.jsx";
+import CategoryBudget from "../components/CategoryBudget";
+import Notifications from "../components/Notifications.jsx";
 const Dashboard = () => {
   const [expenses, setExpenses] = useState([]);
+  const [sort, setSort] = useState("latest");
   const [analytics, setAnalytics] = useState(null);
   const [selectedExpense, setSelectedExpense] = useState(null);
   const [search, setSearch] = useState("");
@@ -69,13 +74,24 @@ const Dashboard = () => {
     fetchAnalytics();
   }, []);
 
-  const filteredExpenses = expenses.filter((expense) => {
-    const matchSearch =
-      expense.category.toLowerCase().includes(search.toLowerCase()) ||
-      expense.description.toLowerCase().includes(search.toLowerCase());
-    const matchFilter = filter === "All" || expense.category === filter;
-    return matchSearch && matchFilter;
-  });
+  const filteredExpenses = expenses
+    .filter((expense) => {
+      const text =
+        expense.category?.toLowerCase().includes(search.toLowerCase()) ||
+        expense.description?.toLowerCase().includes(search.toLowerCase());
+
+      const matchFilter =
+        filter === "All" ||
+        expense.category.toLowerCase() === filter.toLowerCase();
+
+      return text && matchFilter;
+    })
+    .sort((a, b) => {
+      if (sort === "amount") {
+        return b.amount - a.amount;
+      }
+      return new Date(b.date) - new Date(a.date);
+    });
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 p-6">
       <Navbar />
@@ -167,7 +183,11 @@ const Dashboard = () => {
         <BudgetHistory />
         <Insights refresh={fetchAnalytics} />
       </div>
-      <div className="flex gap-4 items-center mb-6">
+      <CategoryBudget />
+      <Notifications />
+      <AIChat />
+      <FinancialScore />
+      <div className="flex gap-4 items-center mb-6 mt-6">
         <input
           placeholder="Search expenses...."
           value={search}
@@ -211,7 +231,25 @@ outline-none
 
           <option className="bg-slate-900 text-white">Other</option>
         </select>
+        <select
+          value={sort}
+          onChange={(e) => setSort(e.target.value)}
+          className="
+w-48
+p-3
+rounded-xl
+bg-white/10
+border
+border-white/20
+text-white
+"
+        >
+          <option value="latest">Latest</option>
+
+          <option value="amount">Highest Amount</option>
+        </select>
       </div>
+
       <h2 className="text-4xl font-extrabold bg-gradient-to-r from-cyan-300 to-purple-400 bg-clip-text text-transparent mt-8 mb-6">
         Your Expenses
         <span className="text-purple-300">💰</span>

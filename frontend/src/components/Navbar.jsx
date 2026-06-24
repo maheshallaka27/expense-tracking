@@ -1,5 +1,5 @@
 import { Link, useNavigate } from "react-router-dom";
-
+import { LayoutDashboard, BarChart3, User, LogOut } from "lucide-react";
 function Navbar() {
   const navigate = useNavigate();
 
@@ -42,24 +42,41 @@ function Navbar() {
       <Link
         to="/dashboard"
         className="
-    text-gray-200
-    hover:text-cyan-300
-    transition
-    font-semibold
+    flex
+items-center
+gap-2
+ hover:text-cyan-300
+text-white
     "
       >
+        <LayoutDashboard size={20} />
         Dashboard
       </Link>
       <Link
         to="/analytics"
         className="
-    text-gray-200
-    hover:text-cyan-300
-    transition
-    font-semibold
+    flex
+items-center
+gap-2
+ hover:text-cyan-300
+text-white
     "
       >
+        <BarChart3 size={20} />
         Analytics
+      </Link>
+      <Link
+        to="/profile"
+        className="
+    flex
+items-center
+gap-2
+ hover:text-cyan-300
+text-white
+    "
+      >
+        <User size={20} />
+        Profile
       </Link>
       <button
         onClick={logout}
@@ -68,11 +85,14 @@ function Navbar() {
         hover:bg-rose-600
         px-5
         py-2
+        flex
+        items-center
         rounded-xl
         font-semibold
         transition
         "
       >
+        <LogOut size={20} />
         Logout
       </button>
     </nav>

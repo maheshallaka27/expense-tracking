@@ -16,6 +16,38 @@ const Expenseform = ({ fetchExpenses, fetchAnalytics, selectedExpense }) => {
       [e.target.name]: e.target.value,
     });
   };
+  const suggestCategory = async () => {
+    try {
+      if (!form.description) {
+        toast.error("Enter description first");
+        return;
+      }
+
+      const token = localStorage.getItem("token");
+
+      const res = await api.post(
+        "/ai/categorize",
+        {
+          description: form.description,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
+
+      setForm({
+        ...form,
+        category: res.data.category,
+      });
+
+      toast.success(`AI suggested ${res.data.category} 🤖`);
+    } catch (error) {
+      toast.error("AI suggestion failed");
+    }
+  };
+
   const handleEdit = (expense) => {
     setEditId(expense._id);
 
@@ -106,12 +138,13 @@ placeholder-gray-300
 outline-none
 "
         />
-        <input
-          name="category"
-          placeholder="Category"
-          value={form.category}
-          onChange={handleChange}
-          className="
+        <div>
+          <input
+            name="category"
+            placeholder="Category"
+            value={form.category}
+            onChange={handleChange}
+            className="
 w-full
 p-3
 rounded-xl
@@ -122,7 +155,25 @@ text-white
 placeholder-gray-300
 outline-none
 "
-        />
+          />
+
+          <button
+            type="button"
+            onClick={suggestCategory}
+            className="
+mt-2
+bg-gradient-to-r
+from-pink-500
+to-purple-500
+px-4
+py-2
+rounded-xl
+font-bold
+"
+          >
+            ✨ AI Suggest Category
+          </button>
+        </div>
         <input
           name="description"
           placeholder="Description"

@@ -4,8 +4,10 @@ import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import Dashboard from "./pages/Dashboard";
 import Analytics from "./components/Analytics";
+import Profile from "./pages/Profile";
 import { useState } from "react";
 import ProtectedRoute from "./components/ProtectedRoute";
+
 function App() {
   const [user, setUser] = useState(null);
   return (
@@ -37,6 +39,14 @@ function App() {
           element={
             <ProtectedRoute>
               <Analytics />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/profile"
+          element={
+            <ProtectedRoute>
+              <Profile />
             </ProtectedRoute>
           }
         />

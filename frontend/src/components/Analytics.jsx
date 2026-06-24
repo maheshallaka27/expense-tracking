@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import Navbar from "./Navbar.jsx";
 import api from "../api/axios.js";
+import MonthlyComparison from "../components/MonthlyComparison.jsx";
+import ReportHistory from "../components/ReportHistory.jsx";
 import Loader from "./Loader.jsx";
 import {
   PieChart,
@@ -131,10 +133,17 @@ function Analytics() {
             Spending Overview
           </h2>
           <BarChart width={500} height={300} data={chartData}>
-            <XAxis dataKey="name" />
-            <YAxis />
-            <Tooltip />
-            <Bar dataKey="amount" />
+            <XAxis dataKey="name" stroke="white" />
+            <YAxis stroke="white" />
+            <Tooltip
+              contentStyle={{
+                backgroundColor: "#0f172a",
+                border: "1px solid rgba(255,255,255,0.2)",
+                borderRadius: "12px",
+                color: "white",
+              }}
+            />
+            <Bar dataKey="amount" fill="#22d3ee" radius={[10, 10, 0, 0]} />
           </BarChart>
         </div>
         <div
@@ -153,12 +162,23 @@ function Analytics() {
             Monthly Spending
           </h2>
           <BarChart width={500} height={300} data={monthlyData}>
-            <XAxis dataKey="name" />
-            <YAxis />
-            <Tooltip />
-            <Bar dataKey="amount" />
+            <XAxis dataKey="name" stroke="white" />
+            <YAxis stroke="white" />
+            <Tooltip
+              contentStyle={{
+                backgroundColor: "#0f172a",
+                border: "1px solid rgba(255,255,255,0.2)",
+                borderRadius: "12px",
+                color: "white",
+              }}
+            />
+            <Bar dataKey="amount" fill="#a855f7" radius={[10, 10, 0, 0]} />
           </BarChart>
         </div>
+      </div>
+      <div className="mt-6">
+        <MonthlyComparison />
+        <ReportHistory />
       </div>
     </div>
   );
